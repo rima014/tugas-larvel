@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tags;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,6 +20,7 @@ class DashboardPostController extends Controller
     {
         return view('dashboard.posts.index', [
             'posts' => Post::where('user_id', auth()->user()->id)->get(),
+            'tags' => Tags::all(),
         ]);
     }
 
@@ -29,9 +31,10 @@ class DashboardPostController extends Controller
      */
     public function create()
     {
-        return view('dashboard.posts.create', [
-            'categories' => Category::all(),
-        ]);
+        $tags = Tags::all();
+        $categories = Category::all();
+
+        return view('dashboard.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -39,24 +42,36 @@ class DashboardPostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Post $post)
     {
         // return $request->file('image')->store('post-images');
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'slug' => 'required|unique:posts',
-            'category_id' => 'required',
+            'category_id' => 'required|exists:categories,id',
             'image' => 'image|file|max:1024',
             'body' => 'required',
+            'tags' => 'required',
         ]);
 
         if ($request->file('image')) {
             $validatedData['image'] = $request->file('image')->store('post-images');
         }
-
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['excerpt'] = Str::limit(strip_tags($request->body), 200);
-        Post::create($validatedData);
+
+        $posts = Post::create($validatedData);
+
+        foreach ($request->tags as $currentTag) {
+            $param = [];
+            if (Tags::find($currentTag) == null) {
+                $param = ['name' => $currentTag, 'slug' => $currentTag];
+            } else {
+                $param = ['id' => $currentTag];
+            }
+            $tag = Tags::firstOrCreate($param);
+            $posts->tags()->attach($tag->id);
+        }
 
         return redirect('/dashboard/posts')->with('success', 'New post has been added!');
     }
@@ -87,6 +102,7 @@ class DashboardPostController extends Controller
         return view('dashboard.posts.edit', [
             'post' => $post,
             'categories' => Category::all(),
+            'tags' => Tags::all(),
         ]);
     }
 
@@ -111,7 +127,7 @@ class DashboardPostController extends Controller
         }
 
         $validatedData = $request->validate($rules);
-
+        // $tags = explode('#', $request->tags);
         if ($request->file('image')) {
             if ($request->oldImage) {
                 Storage::delete($request->oldImage);
@@ -121,8 +137,20 @@ class DashboardPostController extends Controller
 
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['excerpt'] = Str::limit(strip_tags($request->body), 200);
-        Post::where('id', $post->id)
-                ->update($validatedData);
+
+        $newTags = [];
+        foreach ($request->tags as $currentTag) {
+            $param = [];
+            if (Tags::find($currentTag) == null) {
+                $param = ['name' => $currentTag, 'slug' => $currentTag];
+            } else {
+                $param = ['id' => $currentTag];
+            }
+            $tag = Tags::firstOrCreate($param);
+            array_push($newTags, $tag->id);
+        }
+        $post->tags()->sync($newTags);
+        Post::where('id', $post->id)->update($validatedData);
 
         return redirect('/dashboard/posts')->with('success', 'Post has been Updated!');
     }
@@ -139,6 +167,7 @@ class DashboardPostController extends Controller
         if ($post->image) {
             Storage::delete($post->image);
         }
+        $post->tags()->detach();
         Post::destroy($post->id);
 
         return redirect('/dashboard/posts')->with('success', 'Post has been deleted!');

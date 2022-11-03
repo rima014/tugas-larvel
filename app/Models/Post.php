@@ -12,7 +12,7 @@ class Post extends Model
     use Sluggable;
 
     // protected $fillable = ['title', 'excerpt', 'body'];
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'post_id'];
     protected $with = ['category', 'author'];
 
     public function scopeFilter($query, array $filters)
@@ -48,6 +48,11 @@ class Post extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tags::class, 'post_tag', 'post_id', 'tag_id');
     }
 
     public function sluggable(): array

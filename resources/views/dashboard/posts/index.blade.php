@@ -10,7 +10,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <div class="table-responsive col-lg-8">
+    <div class="table-responsive col-lg-25">
         <a href="/dashboard/posts/create " class="btn btn-primary mb-3">Create new post</a>
         <table class="table table-striped table-sm">
         <thead>
@@ -18,6 +18,7 @@
             <th scope="col">#</th>
             <th scope="col">Title</th>
             <th scope="col">Category</th>
+            <th scope="col">Tag</th>
             <th scope="col">Action</th>
             </tr>
         </thead>
@@ -26,14 +27,19 @@
             <tr>
             <td>{{ $loop->iteration }}</td>
             <td>{{ $post->title }}</td>
-            <td>{{ $post->category->name }}</td>
+            <td>{{ $post->category->name ?? 'None' }}</td>
+                <td>
+                    @foreach ($post->tags as $tag)
+                    <button type="button" class="btn btn-secondary mb-2">{{ $tag->name }}</button>
+                    @endforeach
+                </td>
             <td>
-                <a href="/dashboard/posts/{{ $post->slug }}" class="babge bg-info"><span data-feather="eye" class="align-text-bottom"></a></span>
-                <a href="/dashboard/posts/{{ $post->slug }}/edit" class="babge bg-warning"><span data-feather="edit" class="align-text-bottom"></a></span>
-                <form action="/dashboard/posts/{{ $post->slug }}" method="post" class="d-inline">
+                <a href="/dashboard/posts/{{ $post->slug }}" class="babge bg-info text-center mb-2"><span data-feather="eye" class="align-text-bottom"></a></span>
+                <a href="/dashboard/posts/{{ $post->slug }}/edit" class="babge bg-warning text-center mb-2"><span data-feather="edit" class="align-text-bottom"></a></span>
+                <form action="/dashboard/posts/{{ $post->slug }}" method="post" class="d-inline mb-2">
                     @method('delete')
                     @csrf
-                    <button class="babge bg-danger border-0" onclick="return confirm ('Are you sure?')"><span data-feather="x-circle" class="align-text-bottom"></span></button>
+                    <button class="babge bg-danger border-0 text-center" onclick="return confirm ('Are you sure?')"><span data-feather="x-circle" class="align-text-bottom"></span></button>
                 </form>
             </td>
             </tr>

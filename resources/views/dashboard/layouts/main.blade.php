@@ -13,7 +13,8 @@
     {{-- trik editor --}}
     <link rel="stylesheet" type="text/css" href="{{ asset('/css/trix.css') }}">
     <script type="text/javascript" src="{{ asset('/js/trix.js') }}"></script>
-
+    {{-- <script src="assets/modules/select2/dist/js/select2.full.min.js"></script> --}}
+    <link rel="stylesheet" href="netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
     <style>
         trix-toolbar [data-trix-button-group="file-tools"] {
             display: none;

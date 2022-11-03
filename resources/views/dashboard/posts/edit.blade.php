@@ -42,6 +42,19 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group">
+                <label for="tags">Tag</label>
+                <select class="form-select select2" name="tags[]" multiple="multiple">
+                @foreach ($tags as $tag )
+                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                @endforeach
+                </select>
+                @error('tags')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
 
             <div class="mb-3">
                 <label for="image" class="form-label">Post Image</label>

@@ -9,6 +9,7 @@
 
     {{-- bosstrap icons --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css">
 
     {{-- my stayle --}}
     <link rel="stylesheet" href="/css/style.css">
@@ -29,12 +30,8 @@
         @yield('content')
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
         <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
         <script src="/js/dashboard.js"></script>
     </body>
 </html>
-{{-- @extends('layouts.main')
-@section('container')
-<h1>Selamat Datang Di Halaman Home</h1>
-@endsection --}}
+

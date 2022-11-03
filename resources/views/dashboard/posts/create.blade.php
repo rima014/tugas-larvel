@@ -21,7 +21,7 @@
             <div class="mb-3">
                 <label for="slug" class="form-label">Slug</label>
                 <input type="text" class="form-control @error('Slug') is-invalid
-                @enderror" id="slug" name="slug" required value="{{ old('slug') }}">
+                @enderror" id="slug" name="slug" required value="{{ old('slug') }}" disabled>
                 @error('slug')
                     <div class="invalid-feedback">
                         {{ $message }}
@@ -40,8 +40,38 @@
                         @endif
                     @endforeach
                 </select>
+                @error('category')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
             </div>
-
+            {{-- <div class="mb-3">
+                <label for="tags" class="form-label">tags</label>
+                <select class="form-select selectpicker" multiple="multiple" name="tags[]" >
+                @foreach ($tags as $tag )
+                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                @endforeach
+                </select>
+                @error('tags')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div> --}}
+            <div class="form-group">
+                <label for="tags">Tag</label>
+                <select class="form-select select2" name="tags[]" multiple="multiple">
+                @foreach ($tags as $tag )
+                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                @endforeach
+                </select>
+                @error('tags')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Post Image</label>
                 <img class="img-preview img-fluid mb-3 col-sm-5">
@@ -53,7 +83,6 @@
                     </div>
                 @enderror
             </div>
-
             <div class="mb-3">
                 <label for="body" class="form-label">Body</label>
                 @error('body')
@@ -66,6 +95,9 @@
             <button type="submit" class="btn btn-primary">Create Post</button>
         </form>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <script>
         const title = document.querySelector("#title");
@@ -97,5 +129,14 @@
                 imgPreview.src = oFREvent.target.result;
             }
         }
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $('.select2').select2({
+                placeholder: "Select Tags",
+                tags: true
+            });
+        });
     </script>
 @endsection

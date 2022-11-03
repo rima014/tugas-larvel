@@ -13,7 +13,7 @@
                                 <p class="text-white-50 mb-5">Please enter your email and password!</p>
                             </div>
 
-                            <form method="post" action="{{ route("login.index") }}">
+                            <form method="post" action="{{ route("login.authenticate") }}">
                                 @csrf
                                 <div class="form-group mb-3">
                                     <label class="form-label" for="email">{{ __('Email') }}</label>

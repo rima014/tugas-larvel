@@ -13,6 +13,12 @@
             My posts
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link {{ Request::is ('dashboard/posts') ? 'active' : '' }}" href="{{ route('tag.index') }}">
+            <span data-feather="file-text" class="align-text-bottom"></span>
+            Tag
+          </a>
+        </li>
       </ul>
       @can('admin')
         <h6 class="sidebar-heading d-felex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -27,5 +33,6 @@
             </li>
         </ul>
       @endcan
+    </ul>
     </div>
 </nav>

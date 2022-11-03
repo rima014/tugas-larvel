@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tags;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -23,13 +24,24 @@ class DatabaseSeeder extends Seeder
             'email' => 'ramba14@gmail.com',
             'password' => bcrypt('password'),
         ]);
-        // User::create([
-        //     'name' => 'Julia Ria',
-        //     'email' => 'juliaria@gmail.com',
-        //     'password' => bcrypt('11111')
-        // ]);
-
         User::factory(4)->create();
+
+        Tags::create([
+            'name' => 'PHP',
+            'slug' => 'php',
+        ]);
+        Tags::create([
+            'name' => 'Jalan jalan',
+            'slug' => 'jalan-jalan',
+        ]);
+        Tags::create([
+            'name' => 'Design',
+            'slug' => 'design',
+        ]);
+        Tags::create([
+            'name' => 'Travel',
+            'slug' => 'travel',
+        ]);
 
         Category::create([
             'name' => 'Web Progaming',
@@ -45,12 +57,6 @@ class DatabaseSeeder extends Seeder
             'slug' => 'personal',
         ]);
 
-        Post::factory(13)->create();
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        Post::factory(5)->create();
     }
 }
